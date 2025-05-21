@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cointails - Profile</title>
+    <link rel="stylesheet" href="static\profile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="logo">
+                <h2>Profile</h2>
+            </div>
+            <ul class="nav-links">
+                <li><a href="{{ ('dashboard') }}"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li class="active"><a href="#"><i class="fas fa-user"></i> Profile</a></li>
+                
+            </ul>
+            <div class="logout-btn">
+                <a href="{{ url_for('logout') }}" id="logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header>
+                <h1>My Profile</h1>
+                
+            </header>
+
+            <div class="profile-container">
+                <div class="profile-header">
+                    <div class="profile-image">
+                        <div class="image-container">
+                            <img id="profile-img" src="/api/placeholder/120/120" alt="Profile Image">
+                            <div id="image-upload-overlay" class="hidden">
+                                <i class="fas fa-camera"></i>
+                                <span>Upload Image</span>
+                                <input type="file" id="image-upload" accept="image/*" class="hidden">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-summary">
+                        <h2 id="profile-name">John Doe</h2>
+                        <p class="fitness-level" id="fitness-level">Intermediate</p>
+                        <p class="goal-tag" id="goal-tag">Goal: Weight Loss</p>
+                    </div>
+                </div>
+
+                <div class="profile-details">
+                    <div class="detail-card">
+                        <h3>Personal Information</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <label>Full Name</label>
+                                <p id="full-name" data-field="fullName">John Doe</p>
+                            </div>
+                            <div class="info-item">
+                                <label>Age</label>
+                                <p id="age" data-field="age">32 years</p>
+                            </div>
+                            <div class="info-item">
+                                <label>Birth Date</label>
+                                <p id="birth-date" data-field="birthDate">15 June 1991</p>
+                            </div>
+                            <div class="info-item">
+                                <label>Gender</label>
+                                <p id="gender" data-field="gender">Male</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="detail-card">
+                        <h3>Physical Stats</h3>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-icon">
+                                    <i class="fas fa-weight"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <label>Weight</label>
+                                    <p id="weight" data-field="weight">185 lbs</p>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon">
+                                    <i class="fas fa-ruler-vertical"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <label>Height</label>
+                                    <p id="height" data-field="height">5'11"</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="detail-card">
+                        <h3>Fitness Profile</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <label>Fitness Level</label>
+                                <p id="fitness-level-detail" data-field="fitnessLevel">Intermediate</p>
+                            </div>
+                            <div class="info-item">
+                                <label>Primary Goal</label>
+                                <p id="primary-goal" data-field="primaryGoal">Weight Loss</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button id="edit-profile" class="btn-primary">Edit Profile</button>
+                    <button id="submit-profile" class="btn-primary hidden">Save Changes</button>
+                    <button id="cancel-edit" class="btn-secondary hidden">Back</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Logout Modal -->
+    <div class="modal" id="logout-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Confirm Logout</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to logout from Cointails?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancel-logout">Cancel</button>
+                <button class="btn-primary" id="confirm-logout">Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal" id="success-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Success</h3>
+                <span class="close success-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Your profile has been updated successfully!</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary success-close">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const editProfileBtn = document.getElementById('edit-profile');
+            const submitProfileBtn = document.getElementById('submit-profile');
+            const cancelEditBtn = document.getElementById('cancel-edit');
+            const imageContainer = document.querySelector('.image-container');
+            const imageUploadOverlay = document.getElementById('image-upload-overlay');
+            const imageUploadInput = document.getElementById('image-upload');
+            const profileImg = document.getElementById('profile-img');
+            const headerAvatar = document.getElementById('header-avatar');
+            const profileName = document.getElementById('profile-name');
+            const welcomeName = document.getElementById('welcome-name');
+            const successModal = document.getElementById('success-modal');
+            const successCloseButtons = document.querySelectorAll('.success-close');
+            const logoutBtn = document.getElementById('logout');
+            const logoutModal = document.getElementById('logout-modal');
+            
+            const closeModalButtons = document.querySelectorAll('.close');
+        
+            // Fields that can be edited
+            const editableFields = [
+                'full-name', 'age', 'birth-date', 'gender',
+                'weight', 'height',
+                'fitness-level-detail', 'primary-goal'
+            ];
+        
+            // Calculate age from birth date
+            function calculateAge(birthDate) {
+                const today = new Date();
+                const birth = new Date(birthDate);
+                let age = today.getFullYear() - birth.getFullYear();
+                const monthDiff = today.getMonth() - birth.getMonth();
+                
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+                    age--;
+                }
+                
+                return age;
+            }
+
+            // Format date for display
+            function formatDate(dateString) {
+                const date = new Date(dateString);
+                const options = { day: 'numeric', month: 'long', year: 'numeric' };
+                return date.toLocaleDateString('en-US', options);
+            }
+
+            // Fetch fitness profile data from API
+            async function fetchFitnessProfile() {
+                try {
+                    // Check sessionStorage first for immediate data
+                    const sessionData = sessionStorage.getItem('fitnessProfileData');
+                    if (sessionData) {
+                        const data = JSON.parse(sessionData);
+                        updateProfileData(data);
+                        // Clear the session data after using it
+                        sessionStorage.removeItem('fitnessProfileData');
+                        return;
+                    }
+
+                    // If no session data, fetch from API
+                    const response = await fetch('/api/fitness-profile');
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch profile data');
+                    }
+                    const data = await response.json();
+                    if (data) {
+                        updateProfileData(data);
+                    }
+                } catch (error) {
+                    console.error('Error fetching profile data:', error);
+                }
+            }
+
+            // Helper function to update profile data
+            function updateProfileData(data) {
+                // Update profile data
+                profileData = {
+                    fullName: data.name || 'Not set',
+                    birthDate: data.birthdate || '1991-06-15',
+                    gender: data.gender || 'Not set',
+                    weight: data.weight ? `${data.weight} kg` : 'Not set',
+                    height: data.height ? `${data.height} cm` : 'Not set',
+                    fitnessLevel: data.workout_level || 'Not set',
+                    primaryGoal: data.goals && data.goals.length > 0 ? data.goals[0] : 'Not set',
+                    profileImage: null,
+                };
+
+                // Calculate age from birth date
+                const age = calculateAge(profileData.birthDate);
+                
+                // Update displayed data
+                document.getElementById('full-name').textContent = profileData.fullName;
+                document.getElementById('age').textContent = `${age} years`;
+                document.getElementById('birth-date').textContent = formatDate(profileData.birthDate);
+                document.getElementById('gender').textContent = profileData.gender;
+                document.getElementById('weight').textContent = profileData.weight;
+                document.getElementById('height').textContent = profileData.height;
+                document.getElementById('fitness-level-detail').textContent = profileData.fitnessLevel;
+                document.getElementById('primary-goal').textContent = profileData.primaryGoal;
+                
+                // Update profile header info
+                profileName.textContent = profileData.fullName;
+                document.getElementById('fitness-level').textContent = profileData.fitnessLevel;
+                document.getElementById('goal-tag').textContent = `Goal: ${profileData.primaryGoal}`;
+                if (welcomeName) {
+                    welcomeName.textContent = `Welcome, ${profileData.fullName.split(' ')[0]}`;
+                }
+            }
+
+            // Initial data
+            let profileData = {
+                fullName: 'Not set',
+                birthDate: '1991-06-15',
+                gender: 'Not set',
+                weight: 'Not set',
+                height: 'Not set',
+                fitnessLevel: 'Not set',
+                primaryGoal: 'Not set',
+                profileImage: null,
+            };
+
+            // Load profile data when page loads
+            fetchFitnessProfile();
+        
+            // Disable edit mode
+            function disableEditMode(saveChanges = false) {
+                // Hide image upload overlay
+                imageUploadOverlay.classList.add('hidden');
+                
+                if (saveChanges) {
+                    // Save new values
+                    document.querySelectorAll('.edit-input').forEach(input => {
+                        const fieldId = input.getAttribute('data-field');
+                        if (fieldId) {
+                            // Map field IDs to profile data properties
+                            const fieldMap = {
+                                'full-name': 'fullName',
+                                'birth-date': 'birthDate',
+                                'gender': 'gender',
+                                'weight': 'weight',
+                                'height': 'height',
+                                'fitness-level-detail': 'fitnessLevel',
+                                'primary-goal': 'primaryGoal'
+                            };
+                            
+                            const profileField = fieldMap[fieldId];
+                            if (profileField) {
+                                profileData[profileField] = input.value;
+                                
+                                // If birth date is updated, recalculate age
+                                if (fieldId === 'birth-date') {
+                                    const age = calculateAge(input.value);
+                                    document.getElementById('age').textContent = `${age} years`;
+                                }
+                            }
+                        }
+                    });
+                    
+                    // Update profile header with new name
+                    profileName.textContent = profileData.fullName;
+                    document.getElementById('fitness-level').textContent = profileData.fitnessLevel;
+                    document.getElementById('goal-tag').textContent = `Goal: ${profileData.primaryGoal}`;
+                    welcomeName.textContent = `Welcome, ${profileData.fullName.split(' ')[0]}`;
+                    
+                    // Save data to localStorage
+                    saveProfileData();
+                    
+                    // Show success modal
+                    successModal.style.display = 'flex';
+                }
+                
+                // Convert back to text elements
+                editableFields.forEach(fieldId => {
+                    const inputElement = document.querySelector(`[data-field="${fieldId}"]`);
+                    if (inputElement) {
+                        const fieldMap = {
+                            'full-name': 'fullName',
+                            'birth-date': 'birthDate',
+                            'gender': 'gender',
+                            'weight': 'weight',
+                            'height': 'height',
+                            'fitness-level-detail': 'fitnessLevel',
+                            'primary-goal': 'primaryGoal'
+                        };
+                        
+                        const profileField = fieldMap[fieldId];
+                        if (profileField) {
+                            const p = document.createElement('p');
+                            p.id = fieldId;
+                            p.setAttribute('data-field', fieldId);
+                            
+                            if (fieldId === 'birth-date') {
+                                p.textContent = formatDate(profileData[profileField]);
+                            } else {
+                                p.textContent = profileData[profileField];
+                            }
+                            
+                            // Add flash effect
+                            if (saveChanges) {
+                                p.classList.add('flash-success');
+                                setTimeout(() => p.classList.remove('flash-success'), 1000);
+                            }
+                            
+                            inputElement.replaceWith(p);
+                        }
+                    }
+                });
+                
+                // Switch buttons back
+                editProfileBtn.classList.remove('hidden');
+                submitProfileBtn.classList.add('hidden');
+                cancelEditBtn.classList.add('hidden');
+            }
+        
+            // Enable edit mode
+            function enableEditMode() {
+                // Show image upload overlay
+                imageUploadOverlay.classList.remove('hidden');
+                
+                // Convert text fields to input fields
+                editableFields.forEach(fieldId => {
+                    const element = document.getElementById(fieldId);
+                    if (!element) return;
+                    
+                    const fieldMap = {
+                        'full-name': 'fullName',
+                        'birth-date': 'birthDate',
+                        'gender': 'gender',
+                        'weight': 'weight',
+                        'height': 'height',
+                        'fitness-level-detail': 'fitnessLevel',
+                        'primary-goal': 'primaryGoal'
+                    };
+                    
+                    const profileField = fieldMap[fieldId];
+                    if (!profileField) return;
+                    
+                    const currentValue = profileData[profileField];
+                    
+                    if (fieldId === 'birth-date') {
+                        const dateInput = document.createElement('input');
+                        dateInput.type = 'date';
+                        dateInput.value = currentValue;
+                        dateInput.classList.add('edit-input');
+                        dateInput.setAttribute('data-field', fieldId);
+                        element.replaceWith(dateInput);
+                    } else if (fieldId === 'fitness-level-detail') {
+                        const selectField = document.createElement('select');
+                        selectField.classList.add('edit-input');
+                        selectField.setAttribute('data-field', fieldId);
+                        
+                        const options = ['Beginner', 'Intermediate', 'Advanced'];
+                        options.forEach(option => {
+                            const optionElement = document.createElement('option');
+                            optionElement.value = option;
+                            optionElement.textContent = option;
+                            if (option === currentValue) {
+                                optionElement.selected = true;
+                            }
+                            selectField.appendChild(optionElement);
+                        });
+                        
+                        element.replaceWith(selectField);
+                    } else if (fieldId === 'primary-goal') {
+                        const selectField = document.createElement('select');
+                        selectField.classList.add('edit-input');
+                        selectField.setAttribute('data-field', fieldId);
+                        
+                        const options = ['Weight Loss', 'Muscle Gain', 'Endurance', 'Flexibility', 'General Fitness'];
+                        options.forEach(option => {
+                            const optionElement = document.createElement('option');
+                            optionElement.value = option;
+                            optionElement.textContent = option;
+                            if (option === currentValue) {
+                                optionElement.selected = true;
+                            }
+                            selectField.appendChild(optionElement);
+                        });
+                        
+                        element.replaceWith(selectField);
+                    } else if (fieldId === 'gender') {
+                        const selectField = document.createElement('select');
+                        selectField.classList.add('edit-input');
+                        selectField.setAttribute('data-field', fieldId);
+                        
+                        const options = ['Male', 'Female', 'Other'];
+                        options.forEach(option => {
+                            const optionElement = document.createElement('option');
+                            optionElement.value = option;
+                            optionElement.textContent = option;
+                            if (option === currentValue) {
+                                optionElement.selected = true;
+                            }
+                            selectField.appendChild(optionElement);
+                        });
+                        
+                        element.replaceWith(selectField);
+                    } else {
+                        const inputField = document.createElement('input');
+                        inputField.type = 'text';
+                        inputField.value = currentValue;
+                        inputField.classList.add('edit-input');
+                        inputField.setAttribute('data-field', fieldId);
+                        element.replaceWith(inputField);
+                    }
+                });
+                
+                // Switch buttons
+                editProfileBtn.classList.add('hidden');
+                submitProfileBtn.classList.remove('hidden');
+                cancelEditBtn.classList.remove('hidden');
+            }
+        
+            // Event Listeners
+            editProfileBtn.addEventListener('click', enableEditMode);
+            
+            // Updated submitProfileBtn event listener to automatically switch back to view mode
+            submitProfileBtn.addEventListener('click', () => {
+                disableEditMode(true); // This now automatically switches back to edit mode after saving
+            });
+            
+            cancelEditBtn.addEventListener('click', () => disableEditMode(false));
+        
+            // Image upload functionality
+            imageContainer.addEventListener('click', () => {
+                if (!imageUploadOverlay.classList.contains('hidden')) {
+                    imageUploadInput.click();
+                }
+            });
+        
+            imageUploadInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const imageData = e.target.result;
+                        profileImg.src = imageData;
+                        headerAvatar.src = imageData;
+                        profileData.profileImage = imageData;
+                        saveProfileData();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // Logout modal functionality
+            logoutBtn.addEventListener('click', () => {
+                logoutModal.style.display = 'block';
+            });
+            
+            cancelLogoutBtn.addEventListener('click', () => {
+                logoutModal.style.display = 'none';
+            });
+            
+            confirmLogoutBtn.addEventListener('click', () => {
+                // Here you would typically handle the logout action
+                // For demo purposes, we'll just redirect to a hypothetical login page
+                window.location.href = 'login.html';
+            });
+            
+            // Close modals when clicking on X
+            closeModalButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    this.closest('.modal').style.display = 'none';
+                });
+            });
+            
+            // Success modal close buttons
+            successCloseButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    successModal.style.display = 'none';
+                });
+            });
+            
+            // Close modals when clicking outside
+            window.addEventListener('click', (e) => {
+                if (e.target.classList.contains('modal')) {
+                    e.target.style.display = 'none';
+                }
+            });
+        
+            // Save data to localStorage
+            function saveProfileData() {
+                localStorage.setItem('profileData', JSON.stringify(profileData));
+            }
+        });
+    </script>
+</body>
+</html>

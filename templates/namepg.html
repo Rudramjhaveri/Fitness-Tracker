@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Level-Up Your Fitness - Personal fitness journey tracker" />
+    <meta name="author" content="" />
+    <title>Level-Up Your Fitness</title>
+    <link rel="stylesheet" href="static\namepg.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div id="particles-js"></div>
+    
+    <header class="header">
+        <div class="container">
+            <div class="logo-container">
+                <div class="logo-icon"><i class="fas fa-dumbbell"></i></div>
+                <h1 class="website-name">Level-Up Your Fitness</h1>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-indicator" id="progress-indicator"></div>
+            </div>
+            <div class="progress-steps">
+                <div class="step active" data-step="1">
+                    <div class="step-icon"><i class="fas fa-user"></i></div>
+                    <div class="step-label">Name</div>
+                </div>
+                <div class="step" data-step="2">
+                    <div class="step-icon"><i class="fas fa-bullseye"></i></div>
+                    <div class="step-label">Goals</div>
+                </div>
+                <div class="step" data-step="3">
+                    <div class="step-icon"><i class="fas fa-chart-line"></i></div>
+                    <div class="step-label">Level</div>
+                </div>
+                <div class="step" data-step="4">
+                    <div class="step-icon"><i class="fas fa-id-card"></i></div>
+                    <div class="step-label">Info</div>
+                </div>
+                <div class="step" data-step="5">
+                    <div class="step-icon"><i class="fas fa-weight"></i></div>
+                    <div class="step-label">Body</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Name Section - This is now the first section -->
+        <section id="section-1" class="form-section active">
+            <div class="form-container" data-aos="fade-up">
+                <div class="section-icon">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <h2 class="section-title">What do we call you?</h2>
+                <p class="section-subtitle">We're excited to start your fitness journey!</p>
+                <p>Let's dive into getting to know you better.</p>
+                <div class="input-container">
+                    <input type="text" id="user-name" class="input-field input-name" placeholder=" " />
+                    <label for="user-name" class="input-label">Your Name</label>
+                    <span class="input-focus-effect"></span>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-back" onclick="window.location.href='{{ url_for('welcome') }}'">
+                        <i class="fas fa-arrow-left"></i>
+                        Back
+                    </button>
+                    <button type="button" class="btn btn-next" data-next="section-2">
+                        Next
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+                
+            </div>
+        </section>
+
+        <!-- Goals Section -->
+        <section id="section-2" class="form-section">
+            <div class="form-container" data-aos="fade-up">
+                <div class="section-icon">
+                    <i class="fas fa-bullseye"></i>
+                </div>
+                <h2 class="section-title">What are you aiming to achieve?</h2>
+                <p class="section-subtitle">Select at least 2 goals that are important for your development</p>
+                <form id="goals-form">
+                    <div class="checkbox-group">
+                        <div class="checkbox-container">
+                            <input type="checkbox" id="goal1" name="selections" value="diet">
+                            <label for="goal1">
+                                <div class="checkbox-icon">
+                                    <i class="fas fa-apple-alt"></i>
+                                </div>
+                                <div class="checkbox-content">
+                                    <span class="checkbox-title">Modify my diet</span>
+                                    <span class="checkbox-desc">Focus on better nutrition choices</span>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <div class="checkbox-container">
+                            <input type="checkbox" id="goal2" name="selections" value="weight-loss">
+                            <label for="goal2">
+                                <div class="checkbox-icon">
+                                    <i class="fas fa-weight-scale"></i>
+                                </div>
+                                <div class="checkbox-content">
+                                    <span class="checkbox-title">Lose Weight</span>
+                                    <span class="checkbox-desc">Reduce body fat and get leaner</span>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <div class="checkbox-container">
+                            <input type="checkbox" id="goal3" name="selections" value="weight-gain">
+                            <label for="goal3">
+                                <div class="checkbox-icon">
+                                    <i class="fas fa-arrow-up"></i>
+                                </div>
+                                <div class="checkbox-content">
+                                    <span class="checkbox-title">Gain Weight</span>
+                                    <span class="checkbox-desc">Increase body mass healthily</span>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <div class="checkbox-container">
+                            <input type="checkbox" id="goal4" name="selections" value="muscle">
+                            <label for="goal4">
+                                <div class="checkbox-icon">
+                                    <i class="fas fa-dumbbell"></i>
+                                </div>
+                                <div class="checkbox-content">
+                                    <span class="checkbox-title">Gain Muscles</span>
+                                    <span class="checkbox-desc">Build strength and definition</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-back" data-prev="section-1">
+                            <i class="fas fa-arrow-left"></i>
+                            Back
+                        </button>
+                        <button type="button" class="btn btn-next" data-next="section-3">
+                            Next
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Proficiency Section -->
+        <section id="section-3" class="form-section">
+            <div class="form-container" data-aos="fade-up">
+                <div class="section-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h2 class="section-title">Your workout experience</h2>
+                <p class="section-subtitle">Tell us about your fitness journey so far</p>
+                <form id="proficiency-form">
+                    <div class="radio-group card-radio-group">
+                        <div class="radio-container card-radio">
+                            <input type="radio" id="beginner" name="workout_level" value="beginner">
+                            <label for="beginner">
+                                <div class="card-icon">
+                                    <i class="fas fa-seedling"></i>
+                                </div>
+                                <h3>Beginner</h3>
+                                <p>New to fitness or just starting out</p>
+                            </label>
+                        </div>
+                        
+                        <div class="radio-container card-radio">
+                            <input type="radio" id="intermediate" name="workout_level" value="intermediate">
+                            <label for="intermediate">
+                                <div class="card-icon">
+                                    <i class="fas fa-running"></i>
+                                </div>
+                                <h3>Intermediate</h3>
+                                <p>Consistent workouts for 6+ months</p>
+                            </label>
+                        </div>
+                        
+                        <div class="radio-container card-radio">
+                            <input type="radio" id="advanced" name="workout_level" value="advanced">
+                            <label for="advanced">
+                                <div class="card-icon">
+                                    <i class="fas fa-fire"></i>
+                                </div>
+                                <h3>Advanced</h3>
+                                <p>Dedicated fitness enthusiast for years</p>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-back" data-prev="section-2">
+                            <i class="fas fa-arrow-left"></i>
+                            Back
+                        </button>
+                        <button type="button" class="btn btn-next" data-next="section-4">
+                            Next
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+  <!-- Personal Info Section -->
+<section id="section-4" class="form-section">
+    <div class="form-container" data-aos="fade-up">
+        <div class="section-icon">
+            <i class="fas fa-id-card"></i>
+        </div>
+        <h2 class="section-title">Personal Information</h2>
+        <p class="section-subtitle">Help us tailor your fitness plan</p>
+        <form id="personal-info-form">
+            <div class="form-group">
+                <h3>Please indicate your gender to estimate your daily calorie requirements</h3>
+                <div class="radio-group gender-group">
+                    <div class="radio-container gender-radio">
+                        <input type="radio" id="male" name="gender" value="male" required>
+                        <label for="male">
+                            <div class="gender-icon">
+                                <i class="fas fa-mars"></i>
+                            </div>
+                            <span>Male</span>
+                        </label>
+                    </div>
+                    
+                    <div class="radio-container gender-radio">
+                        <input type="radio" id="female" name="gender" value="female">
+                        <label for="female">
+                            <div class="gender-icon">
+                                <i class="fas fa-venus"></i>
+                            </div>
+                            <span>Female</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <h3>Enter your date of birth</h3>
+                <div class="input-container date-container">
+                    <input type="date" id="birthdate" name="birthdate" class="input-field" required>
+                    <span class="input-focus-effect"></span>
+                    <div class="date-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                </div>
+            </div>
+                    
+            <div class="btn-group">
+                <button type="button" class="btn btn-back" data-prev="section-3">
+                    <i class="fas fa-arrow-left"></i>
+                    Back
+                </button>
+                <button type="button" class="btn btn-next" data-next="section-5">
+                    Next
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+        <!-- Height & Weight Section -->
+        <section id="section-5" class="form-section">
+            <div class="form-container" data-aos="fade-up">
+                <div class="section-icon">
+                    <i class="fas fa-ruler-combined"></i>
+                </div>
+                <h2 class="section-title">Body Measurements</h2>
+                <p class="section-subtitle">Let's get your current stats</p>
+                <form id="measurements-form">
+                    <div class="form-group measurement-group">
+                        <div class="measurement-card">
+                            <div class="measurement-icon">
+                                <i class="fas fa-ruler-vertical"></i>
+                            </div>
+                            <h3>What is your height?</h3>
+                            <div class="measurement-inputs">
+                                <div class="input-container">
+                                    <input type="number" id="height" name="height" class="input-field" placeholder=" " required>
+                                    <label for="height" class="input-label">Height (cm)</label>
+                                    <span class="input-focus-effect"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="measurement-card">
+                            <div class="measurement-icon">
+                                <i class="fas fa-weight"></i>
+                            </div>
+                            <h3>What is your current weight?</h3>
+                            <div class="measurement-inputs">
+                                <div class="input-container">
+                                    <input type="number" id="weight" name="weight" class="input-field" placeholder=" " required>
+                                    <label for="weight" class="input-label">Weight (kg)</label>
+                                    <span class="input-focus-effect"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-back" data-prev="section-4">
+                            <i class="fas fa-arrow-left"></i>
+                            Back
+                        </button>
+                        <button type="button" class="btn btn-next" id="submit-btn" data-next="section-6">
+                            Submit
+                            <i class="fas fa-check"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Success Section -->
+        <section id="section-6" class="form-section">
+            <div class="form-container success-container" data-aos="fade-up">
+                <div class="success-animation">
+                    <div class="success-circle">
+                        <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                            <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                            <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                        </svg>
+                    </div>
+                </div>
+                <h2 class="section-title">Ready to Level Up!</h2>
+                <p id="user-greeting" class="success-message">Your fitness journey is about to begin!</p>
+                <p>We're creating your personalized plan now.</p>
+                <div class="btn-group">
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-next pulse-button">
+                        <span>Continue</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                <div class="confetti"></div>
+            </div>
+        </section>
+    </main>
+
+    <script  src='static\js\namepg.js'></script>
+</body>
+</html>

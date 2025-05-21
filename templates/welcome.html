@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome Page</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="static\welcome.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+</head>
+<body>
+  <div id="particles-js"></div>
+  
+  
+  
+  <div class="container">
+    <h2 class="text-center">Welcome to</h2>
+    <h1 class="main-title">Level Up Your <span>Fitness</span></h1>
+    
+    <div class="images-row">
+      <div class="image-container">
+        <div class="image-overlay"></div>
+        <img src="https://img.freepik.com/free-vector/flat-design-woman-running-fitness-trackers_23-2148508678.jpg?semt=ais_hybrid&w=740" alt="Progress Analytics">
+        <div class="content">
+          <i class="fas fa-chart-line"></i>
+          <p>"Track your progress with smart analytics and insights."</p>
+        </div>
+      </div>
+      
+      <div class="image-container">
+        <div class="image-overlay"></div>
+        <img src="https://blogimage.vantagefit.io/vfitimages/2023/03/VFit__Blue-2.png" alt="Meal Tracking">
+        <div class="content">
+          <i class="fas fa-apple-alt"></i>
+          <p>"Stay on top of your nutrition with easy meal tracking."</p>
+        </div>
+      </div>
+      
+      <div class="image-container">
+        <div class="image-overlay"></div>
+        <img src="https://img.freepik.com/free-photo/set-weights-dumbbells-mat-fitness-center-sport-fitness-health_613910-20198.jpg?semt=ais_hybrid&w=740" alt="Workout Planning">
+        <div class="content">
+          <i class="fas fa-dumbbell"></i>
+          <p>"Plan your workouts and achieve your fitness goals faster."</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="button-container">
+      <a href="{{ url_for('namepg') }}" class="btn-continue">
+        <span>Continue</span>
+        <i class="fas fa-arrow-right"></i>
+      </a>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      particlesJS('particles-js', {
+        "particles": {
+          "number": {
+            "value": 80,
+            "density": {
+              "enable": true,
+              "value_area": 800
+            }
+          },
+          "color": {
+            "value": "#4CAF50"
+          },
+          "shape": {
+            "type": "circle",
+          },
+          "opacity": {
+            "value": 0.5,
+            "random": false,
+          },
+          "size": {
+            "value": 3,
+            "random": true,
+          },
+          "line_linked": {
+            "enable": true,
+            "distance": 150,
+            "color": "#4CAF50",
+            "opacity": 0.2,
+            "width": 1
+          },
+          "move": {
+            "enable": true,
+            "speed": 2,
+            "direction": "none",
+            "random": false,
+            "straight": false,
+            "out_mode": "out",
+            "bounce": false,
+          }
+        },
+        "interactivity": {
+          "detect_on": "canvas",
+          "events": {
+            "onhover": {
+              "enable": true,
+              "mode": "grab"
+            },
+            "onclick": {
+              "enable": true,
+              "mode": "push"
+            },
+            "resize": true
+          },
+          "modes": {
+            "grab": {
+              "distance": 140,
+              "line_linked": {
+                "opacity": 1
+              }
+            },
+            "push": {
+              "particles_nb": 4
+            }
+          }
+        },
+        "retina_detect": true
+      });
+    });
+  </script>
+</body>
+</html>

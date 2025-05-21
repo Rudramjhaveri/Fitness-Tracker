@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Meal Planning</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #66BB6A;
+            --primary-dark: #43A047;
+            --primary-light: #A5D6A7;
+            --secondary-color: #FFB74D;
+            --accent-color: #FF7043;
+            --text-color: #2C3E50;
+            --text-light: #7F8C8D;
+            --white: #ffffff;
+            --background: #f5f7fa;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --gradient: linear-gradient(45deg, #66BB6A, #81C784);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text-color);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background: var(--background);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 2;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            opacity: 0;
+            transform: translateY(-20px);
+            animation: fadeInDown 1s forwards;
+        }
+
+        .header h1 {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            flex: 1;
+        }
+
+        .feature-card {
+            width: 100%;
+            margin-bottom: 2rem;
+            background: transparent;
+            padding: 0;
+            border-radius: 15px;
+            transition: var(--transition);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s forwards;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-card h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-size: 1.8rem;
+        }
+
+        .detection-section {
+            border: none;
+            border-radius: 15px;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.3);
+            transition: var(--transition);
+            margin: 0 auto;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .upload-area {
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            border: 2px dashed var(--primary-color);
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.3);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            background: rgba(255, 255, 255, 0.5);
+            border-color: var(--primary-dark);
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .upload-btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--primary-color);
+            color: var(--white);
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .drag-text {
+            color: var(--text-light);
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+
+        .meal-plan-form {
+            background: rgba(255, 255, 255, 0.3);
+            padding: 2rem;
+            border-radius: 15px;
+            border: none;
+            backdrop-filter: blur(10px);
+            margin-bottom: 2rem;
+            transition: var(--transition);
+        }
+
+        .meal-plan-form:hover {
+            background: rgba(255, 255, 255, 0.4);
+            border-color: var(--primary-dark);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--primary-light);
+            border-radius: 5px;
+            transition: var(--transition);
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px var(--primary-light);
+        }
+
+        .btn {
+            background: var(--gradient);
+            color: var(--white);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 1px;
+            backdrop-filter: blur(5px);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        #results-area {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            display: none;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @keyframes fadeInDown {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .feature-card:nth-child(1) { animation-delay: 0.2s; }
+        .feature-card:nth-child(2) { animation-delay: 0.4s; }
+
+        #preview-image {
+            max-width: 100%;
+            max-height: 300px;
+            margin-top: 1rem;
+            border-radius: 10px;
+            display: none;
+            object-fit: cover;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 1rem 0;
+            padding: 1rem;
+        }
+
+        .loading::after {
+            content: '';
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 3px solid #f3f3f3;
+            border-radius: 50%;
+            border-top-color: #3498db;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .meal-plan-tabs {
+            display: none;
+        }
+
+        .tab-btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            background: var(--primary-light);
+            color: var(--text-color);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            min-width: 150px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .tab-btn.active {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+
+        .tab-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .plan-details {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .plan-details.active {
+            display: block;
+        }
+
+        .daily-meals {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .meal, .snacks {
+            background: rgba(255, 255, 255, 0.4);
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            height: 100%;
+        }
+
+        .meal h5, .snacks h5 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-light);
+        }
+
+        .meal ul, .snacks ul {
+            list-style: none;
+            padding-left: 1rem;
+        }
+
+        .meal li, .snacks li {
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+
+        .meal li::before, .snacks li::before {
+            content: "•";
+            color: var(--primary-color);
+            position: absolute;
+            left: -1rem;
+        }
+
+        .meal-tracking {
+            background: rgba(255, 255, 255, 0.3);
+            padding: 2rem;
+            border-radius: 15px;
+            border: none;
+            margin-top: 2rem;
+        }
+
+        .tracking-form {
+            background: rgba(255, 255, 255, 0.4);
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            backdrop-filter: blur(5px);
+        }
+
+        .tracking-history {
+            background: rgba(255, 255, 255, 0.4);
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(5px);
+        }
+
+        #meal-history {
+            margin-top: 1rem;
+        }
+
+        .meal-entry {
+            background: rgba(255, 255, 255, 0.3);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border: 1px solid var(--primary-light);
+        }
+
+        .meal-entry:last-child {
+            margin-bottom: 0;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .calorie-result {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            display: none;
+        }
+
+        .calorie-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .calorie-item {
+            background: rgba(255, 255, 255, 0.4);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .calorie-item h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .calorie-item p {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .meal-plan-content {
+            margin-top: 2rem;
+        }
+
+        .count-btn {
+            background: var(--accent-color);
+            margin-top: 1rem;
+            padding: 0.8rem 2rem;
+            font-size: 1.1rem;
+        }
+
+        .count-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        #meal-plans {
+            background: rgba(255, 255, 255, 0.3);
+            padding: 2rem;
+            border-radius: 15px;
+            border: none;
+            margin-top: 2rem;
+        }
+
+        .plan-details h4 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.3rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--primary-light);
+            border-radius: 5px;
+            transition: var(--transition);
+            background: rgba(255, 255, 255, 0.8);
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px var(--primary-light);
+        }
+
+        .diet-type-tabs {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+
+        .diet-type-btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 5px;
+            background: var(--primary-light);
+            color: var(--text-color);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .diet-type-btn.active {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+
+        .diet-type-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .plan-type {
+            display: none;
+        }
+
+        .plan-type.active {
+            display: block;
+        }
+
+        .new-photo-btn {
+            margin-top: 1rem;
+            background: var(--secondary-color);
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+    <div class="container">
+        <header class="header">
+            <h1>Smart Meal Planning</h1>
+            <p>Upload your meal photos for instant calorie detection and get personalized meal plans</p>
+        </header>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <h2>Meal Calorie Detection</h2>
+                <div class="detection-section">
+                    <div class="upload-area" id="upload-area">
+                        <input type="file" id="meal-photo" accept="image/*" style="display: none;">
+                        <div class="button-group">
+                            <button class="btn upload-btn" id="upload-btn">
+                                <i class="fas fa-upload"></i> Upload Photo
+                            </button>
+                        </div>
+                        <p class="drag-text">or drag and drop your photo here</p>
+                        <img id="preview-image" alt="Meal preview">
+                        <div class="loading" id="loading"></div>
+                        <button class="btn count-btn" id="count-btn" style="display: none;">
+                            <i class="fas fa-calculator"></i> Count Calories
+                        </button>
+                    </div>
+                    <div class="calorie-result" id="calorie-result">
+                        <h3>Nutritional Information</h3>
+                        <div class="calorie-details">
+                            <div class="calorie-item">
+                                <h4>Calories</h4>
+                                <p id="calories-value">0</p>
+                            </div>
+                            <div class="calorie-item">
+                                <h4>Protein</h4>
+                                <p id="protein-value">0g</p>
+                            </div>
+                            <div class="calorie-item">
+                                <h4>Carbs</h4>
+                                <p id="carbs-value">0g</p>
+                            </div>
+                            <div class="calorie-item">
+                                <h4>Fat</h4>
+                                <p id="fat-value">0g</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn new-photo-btn" id="new-photo-btn">
+                        <i class="fas fa-camera"></i> Upload New Photo
+                    </button>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <h2>Weekly Meal Plan</h2>
+                <form class="meal-plan-form" id="meal-plan-form">
+                    <div class="form-group">
+                        <label for="goal">Fitness Goal</label>
+                        <select id="goal" required>
+                            <option value="">Select your goal</option>
+                            <option value="weight-loss">Weight Loss</option>
+                            <option value="weight-gain">Weight Gain</option>
+                            <option value="maintain">Maintain Weight</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="current-weight">Current Weight (kg)</label>
+                        <input type="number" id="current-weight" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="target-weight">Target Weight (kg)</label>
+                        <input type="number" id="target-weight" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="activity-level">Activity Level</label>
+                        <select id="activity-level" required>
+                            <option value="">Select activity level</option>
+                            <option value="sedentary">Sedentary (little or no exercise)</option>
+                            <option value="light">Lightly active (1-3 days/week)</option>
+                            <option value="moderate">Moderately active (3-5 days/week)</option>
+                            <option value="very">Very active (6-7 days/week)</option>
+                            <option value="extra">Extra active (very active + physical job)</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn">Generate Meal Plan</button>
+                </form>
+
+                <div id="meal-plans" style="display: none;">
+                    <h3 style="text-align: center; color: var(--primary-color); margin-bottom: 1.5rem;">Your Personalized Meal Plans</h3>
+                    
+                    <div class="diet-type-tabs">
+                        <button class="diet-type-btn active" data-diet="non-veg">Non Vegetarian</button>
+                        <button class="diet-type-btn" data-diet="veg">Vegetarian</button>
+                    </div>
+
+                    <div class="meal-plan-tabs">
+                        <button class="tab-btn active" data-plan="weight-loss">Weight Loss</button>
+                        <button class="tab-btn" data-plan="weight-gain">Weight Gain</button>
+                        <button class="tab-btn" data-plan="maintain">Maintain Weight</button>
+                    </div>
+
+                    <div class="meal-plan-content">
+                        <!-- Non-Vegetarian Plans -->
+                        <div class="plan-type active" data-diet="non-veg">
+                            <div class="plan-details active" data-plan="weight-loss">
+                                <h4>Weight Loss Plan - Non Vegetarian (1500-1800 calories/day)</h4>
+                            <div class="daily-meals">
+                                <div class="meal">
+                                    <h5>Breakfast (400-500 calories)</h5>
+                                    <ul>
+                                            <li>Egg white omelet with spinach</li>
+                                            <li>Whole grain toast</li>
+                                            <li>Greek yogurt with berries</li>
+                                            <li>Green tea</li>
+                                    </ul>
+                                </div>
+                                <div class="meal">
+                                    <h5>Lunch (450-550 calories)</h5>
+                                    <ul>
+                                            <li>Grilled chicken breast</li>
+                                        <li>Quinoa or brown rice</li>
+                                            <li>Mixed salad with olive oil</li>
+                                        <li>Steamed vegetables</li>
+                                    </ul>
+                                </div>
+                                <div class="meal">
+                                    <h5>Dinner (400-500 calories)</h5>
+                                    <ul>
+                                            <li>Baked salmon or lean fish</li>
+                                        <li>Sweet potato</li>
+                                        <li>Steamed broccoli</li>
+                                            <li>Lemon-herb sauce</li>
+                                    </ul>
+                                </div>
+                                <div class="snacks">
+                                    <h5>Snacks (200-300 calories)</h5>
+                                    <ul>
+                                        <li>Protein shake</li>
+                                            <li>Mixed nuts (30g)</li>
+                                            <li>Apple or pear</li>
+                                            <li>Carrot sticks with hummus</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="plan-details" data-plan="weight-gain">
+                                <h4>Weight Gain Plan - Non Vegetarian (2500-3000 calories/day)</h4>
+                            <div class="daily-meals">
+                                <div class="meal">
+                                    <h5>Breakfast (600-700 calories)</h5>
+                                    <ul>
+                                            <li>Protein pancakes with maple syrup</li>
+                                            <li>Scrambled eggs with cheese (3 eggs)</li>
+                                            <li>Bacon or turkey bacon</li>
+                                        <li>Whole grain toast with peanut butter</li>
+                                    </ul>
+                                </div>
+                                <div class="meal">
+                                    <h5>Lunch (700-800 calories)</h5>
+                                    <ul>
+                                            <li>Grilled chicken breast (8 oz)</li>
+                                            <li>Brown rice or quinoa (1.5 cups)</li>
+                                            <li>Avocado and mixed vegetables</li>
+                                        <li>Protein smoothie</li>
+                                    </ul>
+                                </div>
+                                <div class="meal">
+                                    <h5>Dinner (600-700 calories)</h5>
+                                    <ul>
+                                            <li>Lean steak or salmon (8 oz)</li>
+                                            <li>Sweet potato or mashed potatoes</li>
+                                            <li>Roasted vegetables with olive oil</li>
+                                            <li>Mixed green salad</li>
+                                    </ul>
+                                </div>
+                                <div class="snacks">
+                                    <h5>Snacks (400-500 calories)</h5>
+                                    <ul>
+                                            <li>Mass gainer protein shake</li>
+                                            <li>Trail mix with dried fruits (60g)</li>
+                                        <li>Greek yogurt with granola</li>
+                                            <li>Banana with almond butter</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="plan-details" data-plan="maintain">
+                                <h4>Maintenance Plan - Non Vegetarian (2000-2200 calories/day)</h4>
+                            <div class="daily-meals">
+                                <div class="meal">
+                                    <h5>Breakfast (500-600 calories)</h5>
+                                    <ul>
+                                            <li>Whole grain toast with eggs</li>
+                                            <li>Turkey or chicken sausage</li>
+                                            <li>Greek yogurt with honey</li>
+                                            <li>Fresh fruit</li>
+                                    </ul>
+                                </div>
+                                <div class="meal">
+                                    <h5>Lunch (600-700 calories)</h5>
+                                    <ul>
+                                            <li>Grilled fish or chicken (6 oz)</li>
+                                            <li>Quinoa or brown rice (1 cup)</li>
+                                            <li>Steamed vegetables</li>
+                                            <li>Olive oil dressing</li>
+                                    </ul>
+                                </div>
+                                <div class="meal">
+                                    <h5>Dinner (500-600 calories)</h5>
+                                    <ul>
+                                            <li>Lean turkey or fish (6 oz)</li>
+                                            <li>Sweet potato or whole grain pasta</li>
+                                            <li>Mixed vegetables</li>
+                                            <li>Light sauce or seasoning</li>
+                                        </ul>
+                                    </div>
+                                    <div class="snacks">
+                                        <h5>Snacks (300-400 calories)</h5>
+                                        <ul>
+                                            <li>Protein bar or shake</li>
+                                            <li>Mixed nuts (30g)</li>
+                                            <li>Fresh fruits</li>
+                                            <li>Vegetable sticks with hummus</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Vegetarian Plans -->
+                        <div class="plan-type" data-diet="veg">
+                            <div class="plan-details active" data-plan="weight-loss">
+                                <h4>Weight Loss Plan - Vegetarian (1500-1800 calories/day)</h4>
+                                <div class="daily-meals">
+                                    <div class="meal">
+                                        <h5>Breakfast (400-500 calories)</h5>
+                                        <ul>
+                                            <li>Oatmeal with almond milk</li>
+                                            <li>Mixed berries and banana</li>
+                                            <li>Chia seeds and nuts</li>
+                                            <li>Green tea</li>
+                                        </ul>
+                                    </div>
+                                    <div class="meal">
+                                        <h5>Lunch (450-550 calories)</h5>
+                                        <ul>
+                                            <li>Chickpea curry</li>
+                                            <li>Brown rice or quinoa</li>
+                                            <li>Mixed vegetable salad</li>
+                                            <li>Yogurt raita</li>
+                                        </ul>
+                                    </div>
+                                    <div class="meal">
+                                        <h5>Dinner (400-500 calories)</h5>
+                                        <ul>
+                                            <li>Lentil soup</li>
+                                            <li>Roasted vegetables</li>
+                                            <li>Whole grain bread</li>
+                                            <li>Tofu steak</li>
+                                        </ul>
+                                    </div>
+                                    <div class="snacks">
+                                        <h5>Snacks (200-300 calories)</h5>
+                                        <ul>
+                                            <li>Plant-based protein shake</li>
+                                            <li>Trail mix</li>
+                                            <li>Fresh fruits</li>
+                                            <li>Vegetable smoothie</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="plan-details" data-plan="weight-gain">
+                                <h4>Weight Gain Plan - Vegetarian (2500-3000 calories/day)</h4>
+                                <div class="daily-meals">
+                                    <div class="meal">
+                                        <h5>Breakfast (600-700 calories)</h5>
+                                        <ul>
+                                            <li>Protein smoothie bowl with fruits</li>
+                                            <li>Overnight oats with nuts and seeds</li>
+                                            <li>Plant-based protein pancakes</li>
+                                            <li>Almond butter toast</li>
+                                        </ul>
+                                    </div>
+                                    <div class="meal">
+                                        <h5>Lunch (700-800 calories)</h5>
+                                        <ul>
+                                            <li>Quinoa and black bean bowl</li>
+                                            <li>Tempeh or seitan stir-fry</li>
+                                            <li>Avocado and mixed vegetables</li>
+                                            <li>Coconut curry sauce</li>
+                                        </ul>
+                                    </div>
+                                    <div class="meal">
+                                        <h5>Dinner (600-700 calories)</h5>
+                                        <ul>
+                                            <li>Lentil and mushroom loaf</li>
+                                            <li>Mashed potatoes with olive oil</li>
+                                            <li>Roasted vegetables</li>
+                                            <li>Cashew cream sauce</li>
+                                        </ul>
+                                    </div>
+                                    <div class="snacks">
+                                        <h5>Snacks (400-500 calories)</h5>
+                                        <ul>
+                                            <li>Vegan mass gainer shake</li>
+                                            <li>Mixed nuts and dried fruits (60g)</li>
+                                            <li>Energy balls (dates and nuts)</li>
+                                            <li>Smoothie with plant protein</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="plan-details" data-plan="maintain">
+                                <h4>Maintenance Plan - Vegetarian (2000-2200 calories/day)</h4>
+                                <div class="daily-meals">
+                                    <div class="meal">
+                                        <h5>Breakfast (500-600 calories)</h5>
+                                        <ul>
+                                            <li>Tofu scramble with vegetables</li>
+                                            <li>Whole grain toast</li>
+                                            <li>Plant-based yogurt with granola</li>
+                                            <li>Fresh fruit smoothie</li>
+                                        </ul>
+                                    </div>
+                                    <div class="meal">
+                                        <h5>Lunch (600-700 calories)</h5>
+                                        <ul>
+                                            <li>Buddha bowl with quinoa</li>
+                                            <li>Roasted chickpeas</li>
+                                            <li>Mixed vegetables and greens</li>
+                                            <li>Tahini dressing</li>
+                                        </ul>
+                                    </div>
+                                    <div class="meal">
+                                        <h5>Dinner (500-600 calories)</h5>
+                                        <ul>
+                                            <li>Vegetable and bean curry</li>
+                                            <li>Brown rice or millet</li>
+                                        <li>Steamed vegetables</li>
+                                            <li>Coconut yogurt raita</li>
+                                    </ul>
+                                </div>
+                                <div class="snacks">
+                                    <h5>Snacks (300-400 calories)</h5>
+                                    <ul>
+                                            <li>Plant protein smoothie</li>
+                                            <li>Trail mix (30g)</li>
+                                            <li>Fruit and nut butter</li>
+                                            <li>Roasted chickpeas</li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            <div class="feature-card">
+                <h2>Meal Tracking</h2>
+                <div class="tracking-section">
+                    <div class="tracking-form">
+                        <div class="form-group">
+                            <label for="meal-type">Meal Type</label>
+                            <select id="meal-type">
+                                <option value="breakfast">Breakfast</option>
+                                <option value="lunch">Lunch</option>
+                                <option value="dinner">Dinner</option>
+                                <option value="snack">Snack</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="meal-date">Date</label>
+                            <input type="date" id="meal-date">
+                        </div>
+                        <div class="form-group">
+                            <label for="meal-items">Meal Items</label>
+                            <textarea id="meal-items" placeholder="Enter your meal items"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="calories">Calories</label>
+                            <input type="number" id="calories" placeholder="Enter calories">
+                        </div>
+                        <button class="btn" id="track-meal">Track Meal</button>
+                    </div>
+                    <div class="tracking-history">
+                        <h4>Meal History</h4>
+                        <div id="meal-history"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Initialize particles.js
+        particlesJS("particles-js", {
+            particles: {
+                number: {
+                    value: 80,
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
+                },
+                color: {
+                    value: ["#66BB6A", "#FFB74D", "#FF7043"]
+                },
+                shape: {
+                    type: "circle"
+                },
+                opacity: {
+                    value: 0.5,
+                    random: true
+                },
+                size: {
+                    value: 3,
+                    random: true
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#66BB6A",
+                    opacity: 0.2,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: {
+                        enable: true,
+                        mode: "grab"
+                    },
+                    onclick: {
+                        enable: true,
+                        mode: "push"
+                    },
+                    resize: true
+                },
+                modes: {
+                    grab: {
+                        distance: 140,
+                        line_linked: {
+                            opacity: 0.5
+                        }
+                    },
+                    push: {
+                        particles_nb: 4
+                    }
+                }
+            },
+            retina_detect: true
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const uploadArea = document.getElementById('upload-area');
+            const mealPhoto = document.getElementById('meal-photo');
+            const previewImage = document.getElementById('preview-image');
+            const loading = document.getElementById('loading');
+            const resultsArea = document.getElementById('results-area');
+            const calorieResult = document.getElementById('calorie-result');
+            const mealPlanForm = document.getElementById('meal-plan-form');
+            const mealPlans = document.getElementById('meal-plans');
+            const mealTracking = document.querySelector('.meal-tracking');
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const planDetails = document.querySelectorAll('.plan-details');
+
+            // Handle file upload
+            const uploadBtn = document.getElementById('upload-btn');
+            uploadBtn.addEventListener('click', () => {
+                mealPhoto.click();
+            });
+
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = 'var(--primary-dark)';
+                uploadArea.style.background = 'rgba(255, 255, 255, 0.5)';
+            });
+
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.style.borderColor = 'var(--primary-color)';
+                uploadArea.style.background = 'rgba(255, 255, 255, 0.3)';
+            });
+
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = 'var(--primary-color)';
+                uploadArea.style.background = 'rgba(255, 255, 255, 0.3)';
+                const file = e.dataTransfer.files[0];
+                if (file && file.type.startsWith('image/')) {
+                    handleImage(file);
+                }
+            });
+
+            mealPhoto.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    handleImage(file);
+                }
+            });
+
+            function handleImage(file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    previewImage.src = e.target.result;
+                    previewImage.style.display = 'block';
+                    document.getElementById('count-btn').style.display = 'block';
+                    calorieResult.style.display = 'none';
+                    newPhotoBtn.style.display = 'none';
+                    document.querySelector('.button-group').style.display = 'none';
+                    document.querySelector('.drag-text').style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            }
+
+            // Update the count calories button click handler
+            document.getElementById('count-btn').addEventListener('click', async () => {
+                const previewImage = document.getElementById('preview-image');
+                const loading = document.getElementById('loading');
+                const calorieResult = document.getElementById('calorie-result');
+                const countBtn = document.getElementById('count-btn');
+
+                if (!previewImage.src || previewImage.src === '') {
+                    alert('Please upload an image first');
+                    return;
+                }
+
+                try {
+                    // Show loading, hide results and disable button
+                loading.style.display = 'block';
+                    calorieResult.style.display = 'none';
+                    countBtn.disabled = true;
+                    
+                    // Get the image data
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = previewImage.naturalWidth;
+                    canvas.height = previewImage.naturalHeight;
+                    ctx.drawImage(previewImage, 0, 0);
+                    
+                    // Convert to blob
+                    const blob = await new Promise(resolve => {
+                        canvas.toBlob(resolve, 'image/jpeg', 0.95);
+                    });
+                    
+                const formData = new FormData();
+                    formData.append('image', blob, 'meal.jpg');
+
+                // Make API call to detect calories
+                    const response = await fetch('/api/detect-calories', {
+                    method: 'POST',
+                    body: formData
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || 'Failed to process image');
+                    }
+
+                    const data = await response.json();
+                    
+                    // Update UI with results
+                    document.getElementById('calories-value').textContent = data.calories;
+                    document.getElementById('protein-value').textContent = data.protein + 'g';
+                    document.getElementById('carbs-value').textContent = data.carbs + 'g';
+                    document.getElementById('fat-value').textContent = data.fat + 'g';
+                    
+                    // Show results and new photo button
+                    calorieResult.style.display = 'block';
+                    newPhotoBtn.style.display = 'block';
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert(error.message || 'Error detecting calories. Please try again.');
+                } finally {
+                    // Always hide loading and enable button
+                    loading.style.display = 'none';
+                    countBtn.disabled = false;
+                }
+            });
+
+            // Meal plan handling
+            mealPlanForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const goal = document.getElementById('goal').value;
+                const currentWeight = document.getElementById('current-weight').value;
+                const targetWeight = document.getElementById('target-weight').value;
+                const activityLevel = document.getElementById('activity-level').value;
+
+                // Show meal plans only
+                mealPlans.style.display = 'block';
+
+                // Hide all plan details first
+                planDetails.forEach(plan => {
+                    plan.classList.remove('active');
+                    if (plan.dataset.plan === goal) {
+                        plan.classList.add('active');
+                    }
+                });
+
+                // Show only the selected plan type
+                const activeDietType = document.querySelector('.diet-type-btn.active').dataset.diet;
+                planTypes.forEach(type => {
+                    if (type.dataset.diet === activeDietType) {
+                        const plans = type.querySelectorAll('.plan-details');
+                        plans.forEach(plan => {
+                            if (plan.dataset.plan === goal) {
+                                plan.classList.add('active');
+                            } else {
+                                plan.classList.remove('active');
+                            }
+                        });
+                    }
+                });
+            });
+
+            // Remove tab button click handlers since we're hiding the tabs
+            tabButtons.forEach(btn => {
+                btn.removeEventListener('click', () => {});
+            });
+
+            // Diet type switching
+            const dietTypeButtons = document.querySelectorAll('.diet-type-btn');
+            const planTypes = document.querySelectorAll('.plan-type');
+
+            dietTypeButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const diet = btn.dataset.diet;
+                    const currentGoal = document.getElementById('goal').value;
+                    
+                    // Update buttons
+                    dietTypeButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    // Update visible plan
+                    planTypes.forEach(plan => {
+                        plan.classList.remove('active');
+                        if (plan.dataset.diet === diet) {
+                            plan.classList.add('active');
+                            // Show only the current goal's plan
+                            const plans = plan.querySelectorAll('.plan-details');
+                            plans.forEach(p => {
+                                if (p.dataset.plan === currentGoal) {
+                                    p.classList.add('active');
+                                } else {
+                                    p.classList.remove('active');
+                                }
+                            });
+                        }
+                    });
+                });
+            });
+
+            // Meal tracking
+            const trackMealBtn = document.getElementById('track-meal');
+            const mealHistory = document.getElementById('meal-history');
+
+            trackMealBtn.addEventListener('click', () => {
+                const mealType = document.getElementById('meal-type').value;
+                const mealDate = document.getElementById('meal-date').value;
+                const mealItems = document.getElementById('meal-items').value;
+                const calories = document.getElementById('calories').value;
+
+                if (mealType && mealDate && mealItems && calories) {
+                    const meal = {
+                        type: mealType,
+                        date: mealDate,
+                        items: mealItems,
+                        calories: calories
+                    };
+
+                    // Save to local storage
+                    saveMealHistory(meal);
+
+                    // Update UI
+                    const mealEntry = document.createElement('div');
+                    mealEntry.className = 'meal-entry';
+                    mealEntry.innerHTML = `
+                        <div>
+                            <strong>${mealType}</strong> - ${mealDate}
+                            <p>${mealItems}</p>
+                        </div>
+                        <div>
+                            <strong>${calories} calories</strong>
+                        </div>
+                    `;
+                    mealHistory.insertBefore(mealEntry, mealHistory.firstChild);
+
+                    // Clear form
+                    document.getElementById('meal-items').value = '';
+                    document.getElementById('calories').value = '';
+                }
+            });
+
+            // Add new photo button to the detection section
+            const detectionSection = document.querySelector('.detection-section');
+            const newPhotoBtn = document.createElement('button');
+            newPhotoBtn.className = 'btn new-photo-btn';
+            newPhotoBtn.innerHTML = '<i class="fas fa-camera"></i> Upload New Photo';
+            newPhotoBtn.style.display = 'none';
+            detectionSection.appendChild(newPhotoBtn);
+
+            // Handle new photo button click
+            newPhotoBtn.addEventListener('click', () => {
+                // Reset the detection section
+                previewImage.src = '';
+                previewImage.style.display = 'none';
+                document.getElementById('count-btn').style.display = 'none';
+                calorieResult.style.display = 'none';
+                newPhotoBtn.style.display = 'none';
+                // Show upload controls
+                document.querySelector('.button-group').style.display = 'flex';
+                document.querySelector('.drag-text').style.display = 'block';
+            });
+
+            // Set today's date as default for meal tracking
+            document.getElementById('meal-date').valueAsDate = new Date();
+
+            // Load meal history immediately
+            loadMealHistory();
+        });
+
+        // Add these functions at the start of your script
+        function saveMealHistory(meal) {
+            let meals = JSON.parse(localStorage.getItem('mealHistory') || '[]');
+            meals.unshift(meal); // Add new meal at the beginning
+            localStorage.setItem('mealHistory', JSON.stringify(meals));
+        }
+
+        function loadMealHistory() {
+            const meals = JSON.parse(localStorage.getItem('mealHistory') || '[]');
+            const mealHistory = document.getElementById('meal-history');
+            mealHistory.innerHTML = ''; // Clear existing entries
+            
+            meals.forEach(meal => {
+                const mealEntry = document.createElement('div');
+                mealEntry.className = 'meal-entry';
+                mealEntry.innerHTML = `
+                    <div>
+                        <strong>${meal.type}</strong> - ${meal.date}
+                        <p>${meal.items}</p>
+                    </div>
+                    <div>
+                        <strong>${meal.calories} calories</strong>
+                    </div>
+                `;
+                mealHistory.appendChild(mealEntry);
+            });
+        }
+    </script>
+</body>
+</html>

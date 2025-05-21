@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Calorie Tracker | Fitness Pro</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="static\ct.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header" data-header>
+        <div class="container">
+            <div class="header-left">
+                <a href="{{ ('dashboard') }}" class="back-button">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <a href="#" class="logo">
+                    Fitness<span class="span">Pro</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="calorie-tracker">
+        <div class="container">
+            <div class="tracker-wrapper">
+                <!-- User Profile Section -->
+                <div class="profile-section">
+                    <div class="profile-card">
+                        <div class="avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="profile-info">
+                            <h2>Welcome, User!</h2>
+                            <p>Track your daily calories and achieve your fitness goals</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Calculator Section -->
+                <div class="calculator-section">
+                    <div class="calculator-card">
+                        <h2 class="section-title">Personal Details</h2>
+                        
+                        <div class="input-cards">
+                            <!-- Gender Selection -->
+                            <div class="input-card gender-card">
+                                <div class="card-header">
+                                    <i class="fas fa-venus-mars"></i>
+                                    <h3>Gender</h3>
+                                </div>
+                                <div class="gender-toggle">
+                                    <button class="gender-option male active" data-gender="male">
+                                        <i class="fas fa-mars"></i>
+                                        <span>Male</span>
+                                    </button>
+                                    <button class="gender-option female" data-gender="female">
+                                        <i class="fas fa-venus"></i>
+                                        <span>Female</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Age Input -->
+                            <div class="input-card">
+                                <div class="card-header">
+                                    <i class="fas fa-birthday-cake"></i>
+                                    <h3>Age</h3>
+                                </div>
+                                <div class="card-content">
+                                    <div class="number-input">
+                                        <button class="decrease">-</button>
+                                        <input type="number" id="age" value="25" min="13" max="100">
+                                        <button class="increase">+</button>
+                                    </div>
+                                    <div class="value-indicator">
+                                        <span class="value">25</span>
+                                        <span class="unit">years</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Height Input -->
+                            <div class="input-card">
+                                <div class="card-header">
+                                    <i class="fas fa-ruler-vertical"></i>
+                                    <h3>Height</h3>
+                                </div>
+                                <div class="card-content">
+                                    <div class="number-input">
+                                        <button class="decrease">-</button>
+                                        <input type="number" id="height" value="180" min="80" max="250">
+                                        <button class="increase">+</button>
+                                    </div>
+                                    <div class="value-indicator">
+                                        <span class="value">180</span>
+                                        <span class="unit">cm</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Weight Input -->
+                            <div class="input-card">
+                                <div class="card-header">
+                                    <i class="fas fa-weight"></i>
+                                    <h3>Weight</h3>
+                                </div>
+                                <div class="card-content">
+                                    <div class="number-input">
+                                        <button class="decrease">-</button>
+                                        <input type="number" id="weight" value="80" min="40" max="200">
+                                        <button class="increase">+</button>
+                                    </div>
+                                    <div class="value-indicator">
+                                        <span class="value">80</span>
+                                        <span class="unit">kg</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Activity Level -->
+                        <div class="activity-section">
+                            <div class="card-header">
+                                <i class="fas fa-running"></i>
+                                <h3>Activity Level</h3>
+                            </div>
+                            <div class="activity-cards">
+                                <div class="activity-card" data-level="sedentary">
+                                    <i class="fas fa-couch"></i>
+                                    <h4>Sedentary</h4>
+                                    <p>Little or no exercise</p>
+                                </div>
+                                <div class="activity-card" data-level="light">
+                                    <i class="fas fa-walking"></i>
+                                    <h4>Light</h4>
+                                    <p>Light exercise 1-3 days/week</p>
+                                </div>
+                                <div class="activity-card active" data-level="moderate">
+                                    <i class="fas fa-hiking"></i>
+                                    <h4>Moderate</h4>
+                                    <p>Moderate exercise 3-5 days/week</p>
+                                </div>
+                                <div class="activity-card" data-level="active">
+                                    <i class="fas fa-running"></i>
+                                    <h4>Active</h4>
+                                    <p>Hard exercise 6-7 days/week</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Section -->
+                <div class="results-section">
+                    <div class="results-card">
+                        <h2>Your Daily Calorie Needs</h2>
+                        <div class="results-grid">
+                            <div class="result-box" id="maintenance">
+                                <h3>Maintenance</h3>
+                                <div class="calorie-value">2400</div>
+                                <p>calories/day</p>
+                            </div>
+                            <div class="result-box" id="weight-loss">
+                                <h3>Weight Loss</h3>
+                                <div class="calorie-value">1900</div>
+                                <p>calories/day</p>
+                            </div>
+                            <div class="result-box" id="weight-gain">
+                                <h3>Weight Gain</h3>
+                                <div class="calorie-value">2700</div>
+                                <p>calories/day</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress Tracking -->
+                <div class="progress-section">
+                    <div class="progress-card">
+                        <h2>Weekly Progress</h2>
+                        <div class="progress-chart">
+                            <canvas id="progressChart"></canvas>
+                        </div>
+                        <div class="progress-stats">
+                            <div class="stat-item">
+                                <span class="stat-value">-2.5</span>
+                                <span class="stat-label">kg this week</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value">85%</span>
+                                <span class="stat-label">goal achieved</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="static\js\ct.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+</html>
